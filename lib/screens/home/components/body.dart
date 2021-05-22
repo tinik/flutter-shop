@@ -14,17 +14,6 @@ class Body extends StatelessWidget {
         children: <Widget>[
           SearchWidget(),
           Promotion(),
-          Container(
-            padding: const EdgeInsets.only(
-              top: kDefaultPadding,
-              right: kDefaultPadding,
-              left: kDefaultPadding,
-            ),
-            child: Text(
-              "Categories",
-              style: Theme.of(context).textTheme.headline5!.copyWith(fontWeight: FontWeight.bold, fontSize: 18),
-            ),
-          ),
           Categories(),
 
           // Show top-sales widget
@@ -38,7 +27,10 @@ class Body extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline5!.copyWith(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
                 TextButton(
-                  child: Text("more"),
+                  child: Text(
+                    "more",
+                    style: TextStyle(color: kTextColor),
+                  ),
                   onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -83,13 +75,10 @@ class SearchWidget extends StatelessWidget {
         },
         decoration: InputDecoration(
           hintText: 'Enter a search term',
-          filled: false,
-          fillColor: Color(0xFFEAE9E9),
-          focusColor: Colors.white,
-          hoverColor: Colors.white,
           prefixIcon: Icon(Icons.search),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.white70),
           ),
         ),
       ),

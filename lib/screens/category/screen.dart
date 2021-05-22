@@ -5,11 +5,21 @@ import 'package:shop/ui/back.dart';
 import 'package:shop/ui/cart.dart';
 
 class ScreenCategory extends StatelessWidget {
+  final int id;
+
+  ScreenCategory({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: Key("category-${this.id}"),
       appBar: buildAppBar(context),
-      body: Body(),
+      body: Body(
+        id: this.id,
+      ),
     );
   }
 
@@ -25,8 +35,9 @@ class ScreenCategory extends StatelessWidget {
           onPressed: () {},
         ),
         WidgetCart(),
-        SizedBox(width: kDefaultPadding / 2)
       ],
     );
   }
 }
+
+// ---------------------------------------------------------------------------------------------------------------------

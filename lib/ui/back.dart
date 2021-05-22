@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shop/define.dart';
 
 class BackWidget extends StatelessWidget {
+  final color = kTextColor;
+
   const BackWidget({
     Key? key,
   }) : super(key: key);
@@ -11,7 +13,7 @@ class BackWidget extends StatelessWidget {
     return IconButton(
       icon: Icon(
         Icons.arrow_back,
-        color: kTextColor,
+        color: color,
       ),
       onPressed: () => Navigator.pop(context),
     );

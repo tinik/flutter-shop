@@ -14,24 +14,20 @@ class ScreenHome extends StatelessWidget {
         type: BottomNavigationBarType.fixed,
         currentIndex: 0,
         items: [
-            BottomNavigationBarItem(
-              label: "Home",
-              icon: Icon(Icons.home),
-              backgroundColor: kPrimaryColor
-            ),
-            BottomNavigationBarItem(
-              label: "Category",
-              icon: Icon(Icons.list_alt),
-            ),
-            BottomNavigationBarItem(
-              label: "Search",
-              icon: Icon(Icons.search),
-            ),
-            BottomNavigationBarItem(
-              label: "Account",
-              icon: Icon(Icons.account_circle_rounded),
-            ),
-          ],
+          BottomNavigationBarItem(
+            label: "Home",
+            icon: Icon(Icons.home),
+            backgroundColor: kPrimaryColor,
+          ),
+          BottomNavigationBarItem(
+            label: "Search",
+            icon: Icon(Icons.search),
+          ),
+          BottomNavigationBarItem(
+            label: "Account",
+            icon: Icon(Icons.account_circle_rounded),
+          ),
+        ],
       ),
     );
   }

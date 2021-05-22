@@ -1,5 +1,5 @@
 name: shop
-description: Shop Project
+description: Shop Project working with Magento 2
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -21,17 +21,18 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  intl: ^0.17.0
-  carousel_slider: ^4.0.0-nullsafety.0
-
   flutter:
     sdk: flutter
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  intl: ^0.17.0
+  graphql: ^5.0.0-nullsafety.4
   flutter_redux: ^0.8.2
+  carousel_slider: ^4.0.0-nullsafety.0
+  cached_network_image: ^3.0.0
+  modal_bottom_sheet: ^2.0.0
 
 dev_dependencies:
   flutter_test:

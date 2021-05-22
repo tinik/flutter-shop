@@ -44,9 +44,9 @@ class _CartCounterState extends State<CounterWidget> {
                 "+",
                 style: TextStyle(color: kTextColor),
               ),
-              onPressed: () => setState(() {
-                ++itemCount;
-              }),
+              onPressed: () {
+                setState(() => ++itemCount);
+              },
             ),
           ),
         ],

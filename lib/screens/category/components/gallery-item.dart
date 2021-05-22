@@ -1,41 +1,44 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shop/define.dart';
-import 'package:shop/models/Product.dart';
+import 'package:shop/repository/category/products.dart';
 
 final currency = new NumberFormat("#,##0.00", "en_US");
 
 class GalleryItem extends StatelessWidget {
   final Product item;
-  final Function onPress;
 
   const GalleryItem({
     Key? key,
     required this.item,
-    required this.onPress,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: GestureDetector(
-        onTap: () => onPress(),
+        onTap: () => null,
+        //Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenProduct(product: products[0],),),),
         child: buildView(),
       ),
     );
   }
 
-  Column buildView() {
+  Widget buildView() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Container(
-          margin: const EdgeInsets.only(bottom: 5),
+          alignment: Alignment.center,
           child: Hero(
             tag: "product-${item.id}",
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.network(item.image),
+              child: Image(
+                image: CachedNetworkImageProvider(item.thumbnail),
+                height: 192.0,
+              ),
             ),
           ),
         ),
@@ -61,29 +64,7 @@ class GalleryItem extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                RichText(
-                  textAlign: TextAlign.start,
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: "\$ ${currency.format(item.price)}\n",
-                        style: TextStyle(
-                          color: kTextColor,
-                          decoration: TextDecoration.lineThrough,
-                          fontSize: 12,
-                        ),
-                      ),
-                      TextSpan(
-                        text: "\$ ${currency.format(item.price)}",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: kTextColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                createPrice(),
                 Container(
                   padding: const EdgeInsets.all(7),
                   decoration: BoxDecoration(
@@ -104,6 +85,39 @@ class GalleryItem extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  RichText createPrice() {
+    final price = item.price;
+
+    TextSpan regularPrice = TextSpan();
+    if (price.isSpecial) {
+      regularPrice = TextSpan(
+        text: "\$ ${currency.format(price.regular)}\n",
+        style: TextStyle(
+          color: kTextColor,
+          decoration: TextDecoration.lineThrough,
+          fontSize: 12,
+        ),
+      );
+    }
+
+    return RichText(
+      textAlign: TextAlign.start,
+      text: TextSpan(
+        children: [
+          regularPrice,
+          TextSpan(
+            text: "\$ ${currency.format(price.finish)}",
+            style: TextStyle(
+              fontSize: 15,
+              color: kTextColor,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
