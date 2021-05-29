@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:shop/define.dart';
 import 'package:shop/models/Product.dart';
 import 'package:shop/screens/product/components/counter.dart';
-import 'package:shop/screens/product/screen.dart';
+
 
 final currency = new NumberFormat("#,##0.00", "en_US");
 
@@ -35,7 +34,9 @@ class Body extends StatelessWidget {
         ),
         Expanded(
           child: Container(
-            padding: const EdgeInsets.only(top: kDefaultPadding * 1.5),
+            padding: const EdgeInsets.only(
+              top: kDefaultPadding * 1.5,
+            ),
             child: CartPage(),
           ),
         ),
@@ -93,12 +94,7 @@ class _CartPageState extends State<CartPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GestureDetector(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ScreenProduct(product: item),
-                  ),
-                ),
+                onTap: () => null,
                 child: Container(
                   height: 128,
                   width: 128,

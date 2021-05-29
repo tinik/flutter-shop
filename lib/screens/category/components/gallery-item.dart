@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shop/define.dart';
 import 'package:shop/repository/category/products.dart';
+import 'package:shop/screens/product/screen.dart';
 
 final currency = new NumberFormat("#,##0.00", "en_US");
 
@@ -17,9 +18,22 @@ class GalleryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.all(3),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+      ),
       child: GestureDetector(
-        onTap: () => null,
-        //Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenProduct(product: products[0],),),),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ScreenProduct(
+                product: this.item,
+              ),
+            ),
+          );
+        },
         child: buildView(),
       ),
     );
@@ -31,14 +45,11 @@ class GalleryItem extends StatelessWidget {
       children: [
         Container(
           alignment: Alignment.center,
-          child: Hero(
-            tag: "product-${item.id}",
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image(
-                image: CachedNetworkImageProvider(item.thumbnail),
-                height: 192.0,
-              ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image(
+              image: CachedNetworkImageProvider(item.thumbnail),
+              height: 192.0,
             ),
           ),
         ),
@@ -75,7 +86,7 @@ class GalleryItem extends StatelessWidget {
                     splashColor: kTextLightColor,
                     child: Icon(
                       Icons.shopping_cart_rounded,
-                      color: kTextColor,
+                      color: kTextLightColor,
                     ),
                     onTap: () {},
                   ),

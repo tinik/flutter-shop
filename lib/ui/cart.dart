@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:shop/define.dart';
 import 'package:shop/screens/cart/screen.dart';
@@ -7,44 +8,25 @@ class WidgetCart extends StatelessWidget {
   Widget build(BuildContext context) {
     int counter = 99;
 
-    return Stack(
-      children: <Widget>[
-        IconButton(
-          icon: Icon(Icons.shopping_cart),
-          color: kTextColor,
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ScreenCart(),
-            ),
-          ),
+    return TextButton(
+      onPressed: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ScreenCart(),
         ),
-        counter != 0 ? buildCounter(counter) : Container()
-      ],
-    );
-  }
-
-  Positioned buildCounter(int counter) {
-    return Positioned(
-      right: 11,
-      top: 11,
-      child: Container(
-        padding: const EdgeInsets.all(2),
-        decoration: BoxDecoration(
-          color: Colors.red,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        constraints: BoxConstraints(
-          minWidth: 14,
-          minHeight: 14,
-        ),
-        child: Text(
-          '$counter',
+      ),
+      child: Badge(
+        badgeContent: Text(
+          counter.toString(),
           style: TextStyle(
             color: Colors.white,
-            fontSize: 8,
+            fontSize: 10,
           ),
           textAlign: TextAlign.center,
+        ),
+        child: Icon(
+          Icons.shopping_cart,
+          color: kTextColor,
         ),
       ),
     );

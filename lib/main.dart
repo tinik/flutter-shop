@@ -14,8 +14,9 @@ void main() {
 class MyApp extends StatelessWidget {
   final Store store;
 
-  MyApp({Key? key})
-      : this.store = createStore(),
+  MyApp({
+    Key? key,
+  })  : store = createStore(),
         super(key: key);
 
   // This widget is the root of your application.

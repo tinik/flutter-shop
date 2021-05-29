@@ -1,0 +1,4 @@
+enum SortBy {
+  ASC,
+  DESC
+}

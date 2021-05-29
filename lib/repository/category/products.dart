@@ -1,64 +1,36 @@
 import 'package:graphql/client.dart';
 import 'package:shop/helper/client.dart';
+import 'package:shop/helper/product/price.dart';
+import 'package:shop/models/entity/Product/Price.dart';
 
-/*
- *
- * @todo: add special price
- */
+
 class Product {
   final int id;
-  final String sku, name, thumbnail;
-  final Price price;
+  final String sku, name, thumbnail, urlKey, typeId, status;
+  final ProductPrice price;
 
   Product({
     required this.id,
     required this.sku,
     required this.name,
+    required this.typeId,
+    required this.status,
+    required this.urlKey,
     required this.price,
     required this.thumbnail,
   });
 }
 
-class Price {
-  final double _regular;
-  final double _special;
-
-  Price(this._regular, this._special);
-
-  double get regular => _regular;
-
-  bool get isSpecial {
-    if (_special > 0 && _special < _regular) {
-      return true;
-    }
-
-    return false;
-  }
-
-  double get finish {
-    if (true == isSpecial) {
-      return _special;
-    }
-
-    return _regular;
-  }
-}
-
 Product _setPrepareProduct(dynamic row) {
-  final regular = (1.00 * row['price']['regularPrice']['amount']['value']);
-  double special = 0;
+  final price = createProductPrice(row);
 
-  try {
-    if (row.containsKey('special_price')) {
-      special = (1.00 * row['special_price']);
-    }
-  } catch (err) {}
-
-  final price = Price(regular, special);
   return Product(
     id: row['id'],
     sku: row['sku'],
     name: row['name'],
+    typeId: row['type_id'],
+    urlKey: row['url_key'],
+    status: row['stock_status'],
     thumbnail: row['thumbnail']['url'],
     price: price,
   );
@@ -77,6 +49,9 @@ final _queryProducts = gql(r'''
         id
         sku
         name
+        url_key
+        type_id
+        stock_status
         special_price
         price {
           regularPrice {
@@ -94,24 +69,25 @@ final _queryProducts = gql(r'''
   } 
 ''');
 
-Future<Map<String, dynamic>> getProducts(Map<String, dynamic> filters, {int page = 1, int size = 12}) async {
+Future<Map<String, dynamic>> getProducts(
+  Map<String, dynamic> filters,
+  int page,
+  int size,
+  String sortKey,
+  String sortDir,
+) async {
   final client = getClient();
 
-  final sort = {"name": "ASC"};
   final QueryResult result = await client.query(QueryOptions(
     fetchPolicy: FetchPolicy.cacheFirst,
     document: _queryProducts,
     variables: {
       "filters": filters,
-      "sort": sort,
       "size": size,
       "page": page,
+      "sort": {sortKey: sortDir},
     },
   ));
-
-  if (result.hasException) {
-    print(result.exception);
-  }
 
   if (!result.isLoading && null != result.data) {
     final dynamic data = result.data!['products'];
@@ -129,5 +105,10 @@ Future<Map<String, dynamic>> getProducts(Map<String, dynamic> filters, {int page
   return {
     "items": [],
     "count": 0,
+    "page": {
+      "size": 12,
+      "page": 1,
+      "total_pages": 0,
+    },
   };
 }

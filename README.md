@@ -1,3 +1,7 @@
+- initialize: started develop 8 may 2021
+- times ago: 3 weeks - ago
+
+
 # shop
 
 Shop Project

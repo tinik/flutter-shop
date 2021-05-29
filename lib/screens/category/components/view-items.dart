@@ -41,18 +41,25 @@ class _LoadingGallery extends State<CategoryGallery> {
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-        child: GridView.builder(
-          controller: controller,
-          itemCount: widget.products.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: kDefaultPadding / 2,
-            crossAxisSpacing: kDefaultPadding / 2,
-            childAspectRatio: 0.68,
+        padding: EdgeInsets.symmetric(
+          horizontal: kDefaultPadding,
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: kDefaultPadding / 2.5,
           ),
-          itemBuilder: (context, index) => GalleryItem(
-            item: widget.products[index],
+          child: GridView.builder(
+            controller: controller,
+            itemCount: widget.products.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: kDefaultPadding / 2,
+              crossAxisSpacing: kDefaultPadding / 2,
+              childAspectRatio: 0.68,
+            ),
+            itemBuilder: (context, index) => GalleryItem(
+              item: widget.products[index],
+            ),
           ),
         ),
       ),

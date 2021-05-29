@@ -3,6 +3,7 @@ import 'package:shop/define.dart';
 import 'package:shop/screens/category/components/body.dart';
 import 'package:shop/ui/back.dart';
 import 'package:shop/ui/cart.dart';
+import 'package:shop/ui/search.dart';
 
 class ScreenCategory extends StatelessWidget {
   final int id;
@@ -15,10 +16,11 @@ class ScreenCategory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: Key("category-${this.id}"),
       appBar: buildAppBar(context),
+      key: Key("category-${id}"),
+      backgroundColor: Color(0xFFF6F6F6),
       body: Body(
-        id: this.id,
+        id: id,
       ),
     );
   }
@@ -29,11 +31,7 @@ class ScreenCategory extends StatelessWidget {
       elevation: 0,
       leading: BackWidget(),
       actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.search),
-          color: kTextColor,
-          onPressed: () {},
-        ),
+        WidgetSearch(),
         WidgetCart(),
       ],
     );

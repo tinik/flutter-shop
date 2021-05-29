@@ -1,5 +1,5 @@
+import 'package:shop/helper/enum.dart';
 import 'package:shop/repository/category.dart';
-import 'package:shop/repository/category/products.dart';
 
 class CategoryEntity {
   // Required information
@@ -14,6 +14,9 @@ class CategoryEntity {
   int count = 0;
   List items = [];
   Map<String, dynamic> page = {};
+
+  String sortKey = 'relevance';
+  SortBy sortDir = SortBy.DESC;
   // --- Category Products
 
   // Category Filters ---
@@ -21,7 +24,8 @@ class CategoryEntity {
   Map<String, dynamic> filters = {};
   // --- Category Filters
 
-  get hasMoreItems {
-    return count <= items.length;
+  bool get hasMore {
+    final int len = items.length;
+    return (count > len);
   }
 }

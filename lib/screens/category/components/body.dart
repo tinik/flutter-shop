@@ -8,25 +8,30 @@ import 'package:shop/models/entity/Category.dart';
 import 'package:shop/screens/category/components/categories.dart';
 import 'package:shop/screens/category/components/view-filters.dart';
 import 'package:shop/screens/category/components/view-items.dart';
+import 'package:shop/screens/category/components/view-sorts.dart';
+import 'package:shop/screens/category/screen.dart';
 
 class _CategoryViewModel {
   final category;
   final Function fetchCategory;
   final Function applyCategory;
   final Function itemsCategory;
+  final Function sortCategory;
 
   _CategoryViewModel({
     required this.category,
     required this.fetchCategory,
     required this.applyCategory,
     required this.itemsCategory,
+    required this.sortCategory,
   });
 
   static _CategoryViewModel fromState(Store<AppState> store) => _CategoryViewModel(
         category: store.state.category,
         fetchCategory: (id) => store.dispatch(CategoryFetch(id)),
-        applyCategory: (vf) => store.dispatch(CategoryApply(vf)),
-        itemsCategory: (page, limit) => store.dispatch(CategoryItems(page, limit)),
+        applyCategory: (id, vf) => store.dispatch(CategoryApply(id, vf)),
+        itemsCategory: (id, page, limit) => store.dispatch(CategoryItems(id, page, limit)),
+        sortCategory: (id, key, dir) => store.dispatch(CategorySorting(id, key, dir)),
       );
 }
 
@@ -41,13 +46,13 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _CategoryViewModel>(
+      // Events
+      onInit: (store) => store.dispatch(CategoryFetch(id)),
+      // Widget
       converter: _CategoryViewModel.fromState,
-      onDispose: (store) => store.dispatch(CategoryClean()),
-      builder: (context, vm) {
-        final entity = vm.category;
-        if (null == entity || entity.data.id != this.id) {
-          vm.fetchCategory(this.id);
-
+      builder: (context, _CategoryViewModel vm) {
+        final Map collection = vm.category;
+        if (!collection.containsKey(id)) {
           return Center(
             child: Container(
               child: Text(
@@ -60,6 +65,7 @@ class Body extends StatelessWidget {
           );
         }
 
+        final entity = collection[id];
         final category = entity.data;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +73,7 @@ class Body extends StatelessWidget {
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                     horizontal: kDefaultPadding,
                   ),
                   child: Text(
@@ -78,9 +84,23 @@ class Body extends StatelessWidget {
               ],
             ),
             Categories(
-              children: category.children
+              children: category.children,
+              onSelect: (int id) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ScreenCategory(id: id),
+                  ),
+                );
+              },
             ),
-            createFilters(entity, vm),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                createSorting(entity, vm),
+                createFilters(entity, vm),
+              ],
+            ),
             createGallery(entity, vm),
           ],
         );
@@ -94,7 +114,7 @@ class Body extends StatelessWidget {
       return Container(
         width: 10,
         height: 10,
-        margin: const EdgeInsets.symmetric(
+        margin: EdgeInsets.symmetric(
           horizontal: 7,
         ),
         child: CircularProgressIndicator(
@@ -113,16 +133,12 @@ class Body extends StatelessWidget {
     }
 
     final filters = entity.filters;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        createLoading(entity),
-        Aggregations(
-          aggregations: aggregations,
-          filters: filters,
-          onApply: (values) => vm.applyCategory(values),
-        ),
-      ],
+    return Expanded(
+      child: Aggregations(
+        aggregations: aggregations,
+        filters: filters,
+        onApply: (values) => vm.applyCategory(this.id, values),
+      ),
     );
   }
 
@@ -138,7 +154,17 @@ class Body extends StatelessWidget {
     final int page = (items.length / 12).ceil();
     return CategoryGallery(
       products: items,
-      onLoadingMore: () => vm.itemsCategory(page + 1, 12),
+      onLoadingMore: () => vm.itemsCategory(this.id, page + 1, 12),
+    );
+  }
+
+  createSorting(entity, vm) {
+    return Expanded(
+      child: Sorting(
+        sortKey: entity.sortKey,
+        sortDir: entity.sortDir,
+        onApply: (key, dir) => vm.sortCategory(this.id, key, dir),
+      ),
     );
   }
 }

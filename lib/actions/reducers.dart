@@ -13,15 +13,22 @@ AppState reduce(AppState state, dynamic action) {
 
     case CategoryValue:
       developer.log("runtime::CategoryDetails");
+
+      final category = state.category;
+      category[action.id] = action.entity;
       return state.copyWith(
-          category: action.entity,
+          category: category,
         );
 
-    case CategoryClean:
-      developer.log("runtime::CategoryClean");
+    case ProductValue:
+      developer.log("runtime::ProductValue");
+
+      final products = state.products;
+      products[action.data.id] = action.data;
+
       return state.copyWith(
-          category: null,
-        );
+          products: products,
+      );
 
     default:
       return state;

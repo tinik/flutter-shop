@@ -4,6 +4,7 @@ import 'package:redux/redux.dart';
 import 'package:shop/actions/actions.dart';
 import 'package:shop/actions/state.dart';
 import 'package:shop/repository/navigation.dart';
+import 'package:shop/repository/storeConfig.dart';
 
 class AppMiddleware extends MiddlewareClass<AppState> {
   @override
@@ -18,8 +19,10 @@ class AppMiddleware extends MiddlewareClass<AppState> {
   void _loading(Store<AppState> store) async {
     try {
       developer.log('Loading - root category');
-      final navigation = await getNavigation();
+      // final storeConfig = await getStoreConfig();
+      // store.dispatch(AppConfig(storeConfig));
 
+      final navigation = await getNavigation();
       store.dispatch(NavigationLoading(navigation));
     } catch (err) {
       developer.log(err.toString());

@@ -23,15 +23,34 @@ class _AggregationState extends State<Aggregations> {
 
   @override
   Widget build(BuildContext context) {
-    final aggregations = widget.aggregations;
-
     return Center(
-      child: OutlinedButton(
-        child: Text(
-          'Filters',
-          style: TextStyle(
-            color: kTextColor,
+      child: TextButton(
+        style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.all<Color>(kPrimaryColor),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.zero,
+              side: BorderSide(
+                color: kPrimaryColor,
+              ),
+            ),
           ),
+        ),
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                right: 10,
+              ),
+              child: Icon(Icons.filter_list_outlined),
+            ),
+            Text(
+              'Filters',
+              style: TextStyle(
+                color: kTextColor,
+              ),
+            ),
+          ],
         ),
         onPressed: () async {
           await showModalBottomSheet<void>(
@@ -40,36 +59,7 @@ class _AggregationState extends State<Aggregations> {
             context: context,
             backgroundColor: Colors.transparent,
             builder: (BuildContext context) {
-              return Container(
-                height: MediaQuery.of(context).copyWith().size.height * 0.90,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: const Radius.circular(20.0),
-                    topRight: const Radius.circular(20.0),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
-                      child: Text(
-                        "Filter",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      child: ListView.builder(
-                        itemCount: aggregations.length,
-                        itemBuilder: (context, index) => _createOptions(aggregations[index]),
-                      ),
-                    ),
-                    _createActions(context),
-                  ],
-                ),
-              );
+              return _createWindow(context, widget.aggregations);
             },
           );
         },
@@ -77,9 +67,66 @@ class _AggregationState extends State<Aggregations> {
     );
   }
 
+  Widget _createWindow(BuildContext context, List<dynamic> aggregations) {
+    return Container(
+      height: MediaQuery.of(context).copyWith().size.height * 0.90,
+      padding: EdgeInsets.symmetric(
+        horizontal: kDefaultPadding,
+      ),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(kDefaultPadding),
+          topRight: Radius.circular(kDefaultPadding),
+        ),
+      ),
+      child: Column(
+        children: [
+          _createHeader(context),
+          Flexible(
+            child: ListView.builder(
+              itemCount: aggregations.length,
+              itemBuilder: (context, index) => _createOptions(aggregations[index]),
+            ),
+          ),
+          _createActions(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _createHeader(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: kDefaultPadding,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "Filters",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          IconButton(
+            padding: EdgeInsets.symmetric(vertical: kDefaultPadding),
+            constraints: BoxConstraints(),
+            icon: Icon(Icons.close),
+            onPressed: () {
+              setState(() => selected = widget.filters);
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _createActions(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(
+      padding: EdgeInsets.only(
         top: 10,
         bottom: kDefaultPadding * 1.5,
         left: kDefaultPadding,
@@ -134,8 +181,8 @@ class _AggregationState extends State<Aggregations> {
               ),
             ),
             onPressed: () {
-              Navigator.pop(context);
               setState(() => selected = widget.filters);
+              Navigator.pop(context);
             },
           ),
         ],
@@ -146,6 +193,11 @@ class _AggregationState extends State<Aggregations> {
   Widget _createOptions(Aggregation item) {
     return StatefulBuilder(builder: (context, setState) {
       return Container(
+        margin: EdgeInsets.only(bottom: kDefaultPadding / 2),
+        decoration: BoxDecoration(
+          color: kPrimaryBackground,
+          borderRadius: BorderRadius.circular(12),
+        ),
         child: ExpansionTile(
           title: Text(
             item.label,
@@ -158,10 +210,6 @@ class _AggregationState extends State<Aggregations> {
           children: [
             Container(
               alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.symmetric(
-                vertical: 0,
-                horizontal: kDefaultPadding / 2,
-              ),
               child: Column(
                 children: item.options
                     .map((row) => CheckboxListTile(

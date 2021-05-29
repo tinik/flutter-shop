@@ -3,8 +3,13 @@ import 'package:shop/define.dart';
 
 class Categories extends StatelessWidget {
   final children;
+  final Function(int id) onSelect;
 
-  const Categories({Key? key, required this.children}) : super(key: key);
+  const Categories({
+    Key? key,
+    required this.children,
+    required this.onSelect,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +22,9 @@ class Categories extends StatelessWidget {
 
   Padding createItems(children) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: kDefaultPadding),
+      padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
       child: SizedBox(
-        height: 25,
+        height: 18,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: children.length,
@@ -31,9 +36,9 @@ class Categories extends StatelessWidget {
 
   Widget buildCategory(context, category) {
     return GestureDetector(
-      onTap: () => null, // @todo: replace current route
+      onTap: () => onSelect(category.id),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+        padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -44,12 +49,12 @@ class Categories extends StatelessWidget {
                 // color: selected == index ? kTextColor : Colors.black38,
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(top: kDefaultPadding / 4),
-              height: 2,
-              width: 30,
-              // color: selected == index ? Colors.black : Colors.transparent,
-            ),
+            // Container(
+            //   margin: EdgeInsets.only(top: kDefaultPadding / 5),
+            //   height: 2,
+            //   width: 30,
+            //   // color: selected == index ? Colors.black : Colors.transparent,
+            // ),
           ],
         ),
       ),

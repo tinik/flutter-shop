@@ -2,11 +2,12 @@ import 'package:graphql/client.dart';
 import 'package:shop/helper/client.dart';
 
 class _Options {
-  final String label, value;
+  final String label, value, count;
 
   _Options({
     required this.label,
     required this.value,
+    required this.count,
   });
 }
 
@@ -28,6 +29,7 @@ Aggregation _setAggregations(dynamic row) {
   row['options'].forEach((row) => options.add(_Options(
         label: row['label'].toString(),
         value: row['value'].toString(),
+        count: row['count'].toString(),
       )));
 
   return Aggregation(
@@ -44,10 +46,11 @@ final _queryAggregations = gql(r'''
       aggregations {
         code: attribute_code
         label 
-        count  
+        count 
         options {
           label 
           value
+          count 
         }
       }  
     }
