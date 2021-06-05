@@ -1,22 +1,51 @@
+import 'package:shop/helper/mixins/base.dart';
+import 'package:shop/models/entity/Product/Configurable/ConfigurableOption.dart';
+import 'package:shop/models/entity/Product/Configurable/Variants.dart';
 import 'package:shop/models/entity/Product/Media.dart';
 import 'package:shop/models/entity/Product/Price.dart';
 
-class ProductEntity {
+mixin BaseMixin {
+  late List<Media> media = [];
+  late String description = '';
+}
+
+class SimpleProduct {
   final int id;
   final String sku, name, typeId, status, urlKey;
   final ProductPrice price;
-  final List<Media> media;
-  final String description;
 
-  ProductEntity({
+  SimpleProduct({
     required this.id,
     required this.sku,
-    required this.status,
     required this.name,
     required this.typeId,
+    required this.status,
     required this.urlKey,
     required this.price,
-    required this.media,
-    required this.description,
   });
+}
+
+mixin ConfigurableProduct {
+  List<ConfigurableOption> configurableOptions = [];
+  List<Variant> variants = [];
+}
+
+class ProductEntity extends SimpleProduct with Loading, BaseMixin, ConfigurableProduct {
+  ProductEntity({
+    required id,
+    required sku,
+    required name,
+    required status,
+    required typeId,
+    required urlKey,
+    required price,
+  }) : super(
+      id: id,
+      sku: sku,
+      name: name,
+      status: status,
+      typeId: typeId,
+      urlKey: urlKey,
+      price: price,
+  );
 }

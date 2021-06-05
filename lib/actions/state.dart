@@ -8,7 +8,7 @@ class AppState {
   final dynamic storeConfig;
   final List<Menu> navigation;
   final Map<int, CategoryEntity> category;
-  final Map<int, ProductEntity> products;
+  final Map<String, ProductEntity> products;
 
   AppState({
     required this.storeConfig,
@@ -20,7 +20,7 @@ class AppState {
   AppState copyWith({
     List<Menu>? navigation,
     Map<int, CategoryEntity>? category,
-    Map<int, ProductEntity>? products,
+    Map<String, ProductEntity>? products,
     dynamic storeConfig,
   }) {
     return AppState(

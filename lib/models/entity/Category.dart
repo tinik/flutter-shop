@@ -1,14 +1,11 @@
 import 'package:shop/helper/enum.dart';
+import 'package:shop/helper/mixins/base.dart';
 import 'package:shop/repository/category.dart';
 
-class CategoryEntity {
+class CategoryEntity with Loading {
   // Required information
   final Category data;
-
   CategoryEntity(this.data);
-
-  // Category in working process
-  bool isBusy = false;
 
   // Category Products ---
   int count = 0;

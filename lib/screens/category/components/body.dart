@@ -46,8 +46,14 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _CategoryViewModel>(
+      key: Key("category-store-${this.id}"),
       // Events
-      onInit: (store) => store.dispatch(CategoryFetch(id)),
+      onInitialBuild: (vm) {
+        final Map collection = vm.category;
+        if (!collection.containsKey(id)) {
+          vm.fetchCategory(id);
+        }
+      },
       // Widget
       converter: _CategoryViewModel.fromState,
       builder: (context, _CategoryViewModel vm) {
@@ -109,7 +115,7 @@ class Body extends StatelessWidget {
   }
 
   Widget createLoading(CategoryEntity entity) {
-    final bool isBusy = entity.isBusy;
+    final bool isBusy = entity.isLoading;
     if (true == isBusy) {
       return Container(
         width: 10,
@@ -144,15 +150,9 @@ class Body extends StatelessWidget {
 
   Widget createGallery(CategoryEntity entity, vm) {
     final items = entity.items;
-    if (entity.isBusy == false && items.length == 0) {
-      return Container(
-        alignment: Alignment.center,
-        child: Text("Not found items"),
-      );
-    }
-
     final int page = (items.length / 12).ceil();
     return CategoryGallery(
+      key: Key("category-items-${this.id}"),
       products: items,
       onLoadingMore: () => vm.itemsCategory(this.id, page + 1, 12),
     );

@@ -15,9 +15,10 @@ class NavigationLoading {
 
 @immutable
 class ProductFetch {
+  final int id;
   final String key;
 
-  ProductFetch(this.key);
+  ProductFetch(this.id, this.key);
 }
 
 @immutable

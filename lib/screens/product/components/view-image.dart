@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shop/models/entity/Product/Media.dart';
+import 'package:shop/screens/product/components/view-gallery.dart';
 
 class ViewImages extends StatefulWidget {
   final List<Media> media;
@@ -21,20 +22,29 @@ class _ImageState extends State<ViewImages> {
   @override
   Widget build(BuildContext context) {
     late List<Widget> images = [];
-    widget.media.asMap().forEach((int index, Media row) {
+
+    for (int index = 0; index < widget.media.length; index++) {
+      final Media row = widget.media[index];
       final String uri = 'https://jnz3dtiuj77ca.dummycachetest.com/media/catalog/product/' + row.file;
+
       images.add(Container(
         child: Center(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Image(
-              image: CachedNetworkImageProvider(uri),
-              fit: BoxFit.fitWidth,
+          child: GestureDetector(
+            onTap: () => _open(context, uri, index),
+            child: Hero(
+              tag: "media-$uri",
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image(
+                  image: CachedNetworkImageProvider(uri),
+                  fit: BoxFit.fitWidth,
+                ),
+              ),
             ),
           ),
         ),
       ));
-    });
+    }
 
     return Column(
       children: [
@@ -45,11 +55,7 @@ class _ImageState extends State<ViewImages> {
             pageSnapping: true,
             enlargeCenterPage: true,
             aspectRatio: 1,
-            onPageChanged: (index, reason) {
-              setState(() {
-                _current = index;
-              });
-            },
+            onPageChanged: (index, reason) => setState(() => _current = index),
           ),
         ),
         Row(
@@ -71,6 +77,15 @@ class _ImageState extends State<ViewImages> {
           }).toList(),
         ),
       ],
+    );
+  }
+
+  void _open(context, String uri, int index) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ViewGallery(init: index, media: widget.media),
+      ),
     );
   }
 }

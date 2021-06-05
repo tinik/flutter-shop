@@ -28,9 +28,7 @@ class GalleryItem extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ScreenProduct(
-                product: this.item,
-              ),
+              builder: (context) => ScreenProduct(id: this.item.id, urlKey: this.item.urlKey),
             ),
           );
         },

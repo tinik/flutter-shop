@@ -1,37 +1,46 @@
+import 'dart:convert';
+import 'dart:developer' as developer;
+
+import 'package:flutter/foundation.dart';
 import 'package:graphql/client.dart';
 import 'package:shop/helper/client.dart';
-import 'package:shop/helper/product/media.dart';
-import 'package:shop/helper/product/price.dart';
 import 'package:shop/models/entity/Product.dart';
+import 'package:shop/models/entity/Product/Configurable/ConfigurableOption.dart';
+import 'package:shop/models/entity/Product/Configurable/Variants.dart';
 
-ProductEntity _prepareProduct(dynamic row) {
-  final price = createProductPrice(row);
-  final media = createProductMedia(row);
+ProductEntity _prepareProduct(ProductEntity entity, Map<String, dynamic> data) {
+  if (data.containsKey('variants')) {
+    final List<Variant> variants = [];
+    data['variants'].forEach((row) {
+      variants.add(Variant.fromJson(row));
+    });
 
-  return ProductEntity(
-    id: row['id'],
-    sku: row['sku'],
-    name: row['name'],
-    status: row['stock_status'],
-    typeId: row['type_id'],
-    urlKey: row['url_key'],
-    price: price,
-    media: media,
-    description: row['description']['html'],
-  );
+    entity.variants = variants;
+  }
+
+  if (data.containsKey('configurable_options')) {
+    final List<ConfigurableOption>options = [];
+    data['configurable_options'].forEach((row) {
+      options.add(ConfigurableOption.fromJson(row));
+    });
+
+    entity.configurableOptions = options;
+  }
+
+  return entity;
 }
 
 final _queryProduct = gql(r'''
-query getConfigurableProduct($urlKey: String!) {
-  products(filter: {url_key: {eq: $urlKey}}) {
+query getConfigurableProduct($key: String!) {
+  products(filter: {url_key: {eq: $key}}) {
     items {
       id
-      ...ProductDetailsFragment
+      ...ConfigurableFragment
     }
   }
 }
 
-fragment ProductDetailsFragment on ProductInterface {
+fragment ConfigurableFragment on ProductInterface {
   id
   sku
   ... on ConfigurableProduct {
@@ -56,19 +65,22 @@ fragment ProductDetailsFragment on ProductInterface {
     }
     variants {
       attributes {
-        code
         value_index
+        code
       }
       product {
         id
         sku
+        name
+        url_key
+        type_id
         stock_status
         media_gallery_entries {
           id
-          disabled
           file
           label
           position
+          disabled
         }
         special_price
         price {
@@ -85,18 +97,25 @@ fragment ProductDetailsFragment on ProductInterface {
 }
 ''');
 
-Future<ProductEntity> getProduct(String key) async {
+Future<ProductEntity> getConfigurable(ProductEntity entity) async {
   final client = getClient();
 
   final QueryResult result = await client.query(QueryOptions(
-    errorPolicy: ErrorPolicy.ignore,
     fetchPolicy: FetchPolicy.cacheFirst,
     document: _queryProduct,
     variables: {
-      "key": key,
+      "key": entity.urlKey,
     },
   ));
 
+  if (!kReleaseMode) {
+    developer.log('-' * 80);
+    developer.log(json.encode(result.data));
+    developer.log('-' * 80);
+  }
+
   final dynamic data = result.data!['products']['items'][0];
-  return _prepareProduct(data);
+  _prepareProduct(entity, data);
+
+  return entity;
 }

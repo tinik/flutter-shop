@@ -24,7 +24,7 @@ AppState reduce(AppState state, dynamic action) {
       developer.log("runtime::ProductValue");
 
       final products = state.products;
-      products[action.data.id] = action.data;
+      products[action.data.urlKey] = action.data;
 
       return state.copyWith(
           products: products,

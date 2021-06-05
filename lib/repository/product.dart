@@ -6,9 +6,8 @@ import 'package:shop/models/entity/Product.dart';
 
 ProductEntity _prepareProduct(dynamic row) {
   final price = createProductPrice(row);
-  final media = createProductMedia(row);
 
-  return ProductEntity(
+  final entity = ProductEntity(
     id: row['id'],
     sku: row['sku'],
     name: row['name'],
@@ -16,9 +15,12 @@ ProductEntity _prepareProduct(dynamic row) {
     typeId: row['type_id'],
     urlKey: row['url_key'],
     price: price,
-    media: media,
-    description: row['description']['html'],
   );
+
+  entity.media = createProductMedia(row);
+  entity.description = row['description']['html'];
+
+  return entity;
 }
 
 final _queryProduct = gql(r'''

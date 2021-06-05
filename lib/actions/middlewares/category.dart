@@ -131,7 +131,7 @@ class CategoryMiddleware extends MiddlewareClass<AppState> {
         throw Exception("Problems - category is undefined");
       }
 
-      entity!.isBusy = true;
+      entity!.isLoading = true;
       entity.filters = Map.from(filters);
       await store.dispatch(CategoryValue(id, entity));
 
@@ -154,7 +154,7 @@ class CategoryMiddleware extends MiddlewareClass<AppState> {
 
     final entity = store.state.category[id];
 
-    entity!.isBusy = false;
+    entity!.isLoading = false;
     store.dispatch(CategoryValue(id, entity));
   }
 
@@ -164,7 +164,7 @@ class CategoryMiddleware extends MiddlewareClass<AppState> {
       final data = await getCategory(id);
 
       final entity = CategoryEntity(data);
-      entity.isBusy = false;
+      entity.isLoading = false;
 
       await store.dispatch(CategoryValue(id, entity));
 

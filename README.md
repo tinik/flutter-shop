@@ -1,13 +1,15 @@
 - initialize: started develop 8 may 2021
-- times ago: 3 weeks - ago
+- times ago: 4 weeks - ago
+
+
+additional module for stable working  
+- firebase_crashlytics: ^2.0.4
 
 
 # shop
-
 Shop Project
 
 ## Getting Started
-
 This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:

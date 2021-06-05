@@ -4,10 +4,10 @@ class ProductPrice {
 
   ProductPrice(this._regular, this._special);
 
-  double get regular => _regular;
+  double get regular => this._regular;
 
   bool get isSpecial {
-    if (_special > 0 && _special < _regular) {
+    if (this._special > 0 && this._special < this._regular) {
       return true;
     }
 
@@ -15,10 +15,10 @@ class ProductPrice {
   }
 
   double get finish {
-    if (true == isSpecial) {
-      return _special;
+    if (true == this.isSpecial) {
+      return this._special;
     }
 
-    return _regular;
+    return this._regular;
   }
 }
