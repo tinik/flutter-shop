@@ -6,6 +6,30 @@ import 'package:shop/models/entity/Category.dart';
 @immutable
 class AppLoading {}
 
+
+@immutable
+class CartId {
+  final String value;
+
+  CartId(this.value);
+}
+
+@immutable
+class CartConfigurable {
+  final String sku;
+  final String parent;
+  final int quantity;
+
+  CartConfigurable(this.sku, this.parent, this.quantity);
+}
+
+@immutable
+class CartDetails {
+  final dynamic value;
+
+  CartDetails(this.value);
+}
+
 @immutable
 class NavigationLoading {
   final navigation;

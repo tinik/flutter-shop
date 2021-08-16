@@ -9,7 +9,7 @@ mixin BaseMixin {
   late String description = '';
 }
 
-class SimpleProduct {
+class SimpleProduct with BaseMixin {
   final int id;
   final String sku, name, typeId, status, urlKey;
   final ProductPrice price;
@@ -30,7 +30,7 @@ mixin ConfigurableProduct {
   List<Variant> variants = [];
 }
 
-class ProductEntity extends SimpleProduct with Loading, BaseMixin, ConfigurableProduct {
+class ProductEntity extends SimpleProduct with Loading, ConfigurableProduct {
   ProductEntity({
     required id,
     required sku,

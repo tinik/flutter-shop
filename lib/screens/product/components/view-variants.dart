@@ -7,8 +7,13 @@ import 'package:shop/models/entity/Product/Configurable/ConfigurableOption.dart'
 
 class VariantWidget extends StatefulWidget {
   final ProductEntity product;
+  final Function(Map<String, dynamic> values) onChangeValues;
 
-  VariantWidget({Key? key, required this.product}) : super(key: key);
+  VariantWidget({
+    Key? key,
+    required this.product,
+    required this.onChangeValues,
+  }) : super(key: key);
 
   @override
   _VariantState createState() => _VariantState();
@@ -16,6 +21,12 @@ class VariantWidget extends StatefulWidget {
 
 class _VariantState extends State<VariantWidget> {
   final ValueNotifier<Map<String, dynamic>> _values = ValueNotifier({});
+
+  @override
+  void initState() {
+    _values.addListener(() => widget.onChangeValues({..._values.value}));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +40,15 @@ class _VariantState extends State<VariantWidget> {
           );
         }
 
-        return Container();
+        return Container(
+          child: Text("No variants"),
+        );
       },
     );
   }
 
   List<Widget> _createValues(List<dynamic> values, ConfigurableOption row) {
-    final String kRow = row.id.toString();
+    final String kRow = row.attributeCode.toString();
 
     final String typename = values[0]['swatch_data']['__typename'];
     if (typename.toLowerCase() == 'colorswatchdata') {
@@ -79,9 +92,11 @@ class _VariantState extends State<VariantWidget> {
       final values = _createValues(row.values, row);
       if (values.length > 0) {
         final block = Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
+              alignment: Alignment.centerLeft,
               child: Text(
                 row.label,
                 style: TextStyle(
@@ -89,14 +104,27 @@ class _VariantState extends State<VariantWidget> {
                 ),
               ),
             ),
-            Row(children: values),
+            Container(
+              height: 60,
+              alignment: Alignment.centerLeft,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: SizedBox(
+                  child: Row(
+                    children: values,
+                  ),
+                ),
+              ),
+            ),
           ],
         );
 
-        results.add(Container(
-          child: block,
-          padding: EdgeInsets.only(bottom: kDefaultPadding / 2),
-        ));
+        results.add(
+          Container(
+            child: block,
+            padding: EdgeInsets.only(bottom: kDefaultPadding / 2),
+          ),
+        );
       }
     });
 

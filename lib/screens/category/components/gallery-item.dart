@@ -74,21 +74,21 @@ class GalleryItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 createPrice(),
-                Container(
-                  padding: const EdgeInsets.all(7),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100.0),
-                    color: kPrimaryColor,
-                  ),
-                  child: InkWell(
-                    splashColor: kTextLightColor,
-                    child: Icon(
-                      Icons.shopping_cart_rounded,
-                      color: kTextLightColor,
-                    ),
-                    onTap: () {},
-                  ),
-                )
+                // Container(
+                //   padding: const EdgeInsets.all(7),
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.circular(100.0),
+                //     color: kPrimaryColor,
+                //   ),
+                //   child: InkWell(
+                //     splashColor: kTextLightColor,
+                //     child: Icon(
+                //       Icons.shopping_cart_rounded,
+                //       color: kTextLightColor,
+                //     ),
+                //     onTap: () {},
+                //   ),
+                // )
               ],
             ),
           ),

@@ -8,7 +8,12 @@ import 'package:shop/define.dart';
 import 'package:shop/screens/home/screen.dart';
 
 void main() {
-  runApp(MyApp());
+  final store = createStore();
+  store.dispatch(AppLoading());
+
+  runApp(MyApp(
+    store: store,
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -16,14 +21,12 @@ class MyApp extends StatelessWidget {
 
   MyApp({
     Key? key,
-  })  : store = createStore(),
-        super(key: key);
+    required this.store,
+  }) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    store.dispatch(AppLoading());
-
     return StoreProvider<AppState>(
       store: store as Store<AppState>,
       child: MaterialApp(

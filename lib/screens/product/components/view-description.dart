@@ -18,12 +18,12 @@ class _ExpandableTextState extends State<ExpandableText> with TickerProviderStat
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        new AnimatedSize(
+        AnimatedSize(
           vsync: this,
           duration: Duration(milliseconds: 350),
           alignment: Alignment.topCenter,
           child: ConstrainedBox(
-            constraints: widget.isExpanded ? BoxConstraints() : BoxConstraints(maxHeight: 50),
+            constraints: widget.isExpanded ? BoxConstraints() : BoxConstraints(maxHeight: 65),
             child: Html(
               data: widget.text,
               shrinkWrap: true,

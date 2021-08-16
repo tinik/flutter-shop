@@ -1,4 +1,3 @@
-
 import 'package:shop/models/entity/Product/Price.dart';
 
 ProductPrice createProductPrice(dynamic row) {

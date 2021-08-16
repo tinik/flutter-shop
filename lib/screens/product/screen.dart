@@ -5,7 +5,9 @@ import 'package:redux/redux.dart';
 import 'package:shop/actions/actions.dart';
 import 'package:shop/actions/state.dart';
 import 'package:shop/define.dart';
+import 'package:shop/models/entity/Product.dart';
 import 'package:shop/screens/product/components/body.dart';
+import 'package:shop/screens/product/components/view-configurable.dart';
 import 'package:shop/ui/back.dart';
 import 'package:shop/ui/cart.dart';
 import 'package:shop/ui/search.dart';
@@ -78,7 +80,10 @@ class ScreenProduct extends StatelessWidget {
                           color: kTextLightColor,
                         ),
                         // color: kPrimaryColor,
-                        onPressed: () => null,
+                        onPressed: () {
+                          final product = vm.products[urlKey];
+                          _toCartProduct(context, product);
+                        },
                       ),
                     ),
                   ),
@@ -121,5 +126,19 @@ class ScreenProduct extends StatelessWidget {
         WidgetCart(),
       ],
     );
+  }
+
+  void _toCartProduct(context, ProductEntity product) {
+    if (product.typeId == 'configurable') {
+      showModalBottomSheet<void>(
+        context: context,
+        isDismissible: false,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return ViewConfigurable(product: product);
+        },
+      );
+    }
   }
 }

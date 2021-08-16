@@ -1,17 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:shop/define.dart';
 
+typedef onHandleChanged = void Function(int count);
+
 class CounterWidget extends StatefulWidget {
+  int itemCount = 1;
+  onHandleChanged? onChanged;
+
+  CounterWidget({
+    Key? key,
+    int initCount = 1,
+    this.onChanged,
+  })  : itemCount = initCount,
+        super(key: key);
+
   @override
   _CartCounterState createState() => _CartCounterState();
 }
 
 class _CartCounterState extends State<CounterWidget> {
-  int itemCount = 1;
+  void triggerChange(int value) => setState(() {
+        final int count = value + widget.itemCount;
+        if (count > 0) {
+          widget.itemCount = count;
+          widget.onChanged?.call(count);
+        }
+      });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 60,
       child: Row(
         children: [
           SizedBox(
@@ -22,18 +41,16 @@ class _CartCounterState extends State<CounterWidget> {
                 "-",
                 style: TextStyle(color: kTextColor),
               ),
-              onPressed: () => setState(() {
-                if (itemCount > 1) {
-                  --itemCount;
-                }
-              }),
+              onPressed: () => triggerChange(-1),
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: kDefaultPadding / 2,
             ),
-            child: Text(itemCount.toString().padLeft(2, '0')),
+            child: Text(
+              widget.itemCount.toString().padLeft(2, '0'),
+            ),
           ),
           Container(
             alignment: Alignment.center,
@@ -44,9 +61,7 @@ class _CartCounterState extends State<CounterWidget> {
                 "+",
                 style: TextStyle(color: kTextColor),
               ),
-              onPressed: () {
-                setState(() => ++itemCount);
-              },
+              onPressed: () => triggerChange(1),
             ),
           ),
         ],

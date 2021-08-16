@@ -64,13 +64,17 @@ class Body extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _createPrice(),
+                    IconButton(
+                      onPressed: () => null,
+                      icon: Icon(
+                        Icons.favorite_outline,
+                      ),
+                    ),
                   ],
                 ),
 
                 // VariantWidget(product: this._data._value['cache']),
                 ExpandableText(product.description ?? ""),
-
-                _createVariants()
               ],
             ),
           ),
@@ -172,18 +176,5 @@ class Body extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Widget _createVariants() {
-    if (product.typeId == 'configurable') {
-      return Container(
-        padding: EdgeInsets.only(
-          bottom: kDefaultPadding,
-        ),
-        child: VariantWidget(product: product),
-      );
-    }
-
-    return Container();
   }
 }

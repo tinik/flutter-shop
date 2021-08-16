@@ -55,7 +55,9 @@ class _ViewGalleryState extends State<ViewGallery> {
 
                   return PhotoViewGalleryPageOptions(
                     imageProvider: CachedNetworkImageProvider(uri),
-                    // initialScale: PhotoViewComputedScale.contained * 0.8,
+                    minScale: 0.03,
+                    maxScale: 0.8,
+                    initialScale: PhotoViewComputedScale.contained,
                     tightMode: true,
                     heroAttributes: PhotoViewHeroAttributes(
                       tag: "media-$uri",

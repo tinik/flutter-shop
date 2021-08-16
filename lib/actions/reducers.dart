@@ -30,6 +30,24 @@ AppState reduce(AppState state, dynamic action) {
           products: products,
       );
 
+    case CartId:
+      developer.log("runtime::CartId");
+      final cart = state.cart;
+      cart['cartId'] = action.value;
+
+      return state.copyWith(
+        cart: cart,
+      );
+
+    case CartDetails:
+      developer.log("runtime::CartDetails");
+      final cart = state.cart;
+      cart['details'] = action.value;
+
+      return state.copyWith(
+        cart: cart,
+      );
+
     default:
       return state;
   }
