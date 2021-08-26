@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop/define.dart';
 import 'package:shop/screens/home/components/body.dart';
+import 'package:shop/screens/search/screen.dart';
 import 'package:shop/ui/cart.dart';
 
 class ScreenHome extends StatelessWidget {
@@ -28,6 +29,17 @@ class ScreenHome extends StatelessWidget {
             icon: Icon(Icons.account_circle_rounded),
           ),
         ],
+        onTap: (int index) {
+          // Search index
+          if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ScreenSearch(query: ""),
+              ),
+            );
+          }
+        },
       ),
     );
   }

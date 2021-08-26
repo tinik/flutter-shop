@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop/define.dart';
 import 'package:shop/screens/home/components/categories.dart';
 import 'package:shop/screens/home/components/promotion.dart';
-import 'package:shop/screens/sarch/screen.dart';
+import 'package:shop/screens/search/screen.dart';
 import 'package:shop/screens/top-sales/widget.dart';
 
 class Body extends StatelessWidget {
@@ -76,6 +76,7 @@ class SearchWidget extends StatelessWidget {
         decoration: InputDecoration(
           hintText: 'Enter a search term',
           prefixIcon: Icon(Icons.search),
+          contentPadding: EdgeInsets.all(kDefaultPadding / 1.5),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide(color: Colors.white70),

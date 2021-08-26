@@ -92,3 +92,19 @@ class CategoryFetch {
 
   CategoryFetch(this.id);
 }
+
+// Search
+@immutable
+class SearchFetch {
+  final String search;
+
+  SearchFetch(this.search);
+}
+
+@immutable
+class SearchValue {
+  final String search;
+  final dynamic data;
+
+  SearchValue(this.search, this.data);
+}

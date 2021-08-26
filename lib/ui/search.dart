@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop/define.dart';
-import 'package:shop/screens/sarch/screen.dart';
+import 'package:shop/screens/search/screen.dart';
 
 class WidgetSearch extends StatelessWidget {
   @override

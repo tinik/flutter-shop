@@ -123,16 +123,20 @@ class CategoryMiddleware extends MiddlewareClass<AppState> {
   void _filters(Store<AppState> store, CategoryApply action) async {
     final int id = action.id;
     final Map filters = action.filters;
-    developer.log('Filter - category ${filters}');
 
     try {
+      developer.log('Filter - category $filters');
+
       final entity = __getCategoryBy(id, store);
       if (false == (entity is CategoryEntity)) {
         throw Exception("Problems - category is undefined");
       }
 
       entity!.isLoading = true;
-      entity.filters = Map.from(filters);
+
+      entity!.filters.clear();
+      filters.forEach((key, value) => entity.filters[key] = value);
+
       await store.dispatch(CategoryValue(id, entity));
 
       final String entityId = entity.data.id.toString();
@@ -148,13 +152,9 @@ class CategoryMiddleware extends MiddlewareClass<AppState> {
       developer.log(err.toString());
     }
 
-    if (false == (store.state.category is CategoryEntity)) {
-      throw Exception("Problems - category is undefined");
-    }
-
     final entity = store.state.category[id];
-
     entity!.isLoading = false;
+
     store.dispatch(CategoryValue(id, entity));
   }
 

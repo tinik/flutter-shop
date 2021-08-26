@@ -107,6 +107,13 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     final items = getValueByPath(widget.details, path: 'items');
+    if (items.length == 0) {
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: kDefaultPadding * 2),
+        alignment: Alignment.topCenter,
+        child: Text("Cart is empty"),
+      );
+    }
 
     return ListView.builder(
       itemCount: items.length,

@@ -46,15 +46,8 @@ class Categories extends StatelessWidget {
               category.name,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                // color: selected == index ? kTextColor : Colors.black38,
               ),
             ),
-            // Container(
-            //   margin: EdgeInsets.only(top: kDefaultPadding / 5),
-            //   height: 2,
-            //   width: 30,
-            //   // color: selected == index ? Colors.black : Colors.transparent,
-            // ),
           ],
         ),
       ),

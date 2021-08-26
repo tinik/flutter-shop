@@ -11,6 +11,15 @@ AppState reduce(AppState state, dynamic action) {
           navigation: action.navigation,
         );
 
+    case SearchValue:
+      developer.log("runtime::SearchLoading");
+
+      state.search[action.search] = action.data;
+
+      return state.copyWith(
+        search: state.search,
+      );
+
     case CategoryValue:
       developer.log("runtime::CategoryDetails");
 
