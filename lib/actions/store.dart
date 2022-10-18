@@ -7,6 +7,10 @@ import 'package:shop/actions/middlewares/search.dart';
 import 'package:shop/actions/reducers.dart';
 import 'package:shop/actions/state.dart';
 
+const _defaultProfile = {
+  "is_auth": false,
+};
+
 final state = AppState(
   cart: {},
   navigation: [],
@@ -14,6 +18,7 @@ final state = AppState(
   products: {},
   storeConfig: {},
   search: {},
+  profile: _defaultProfile,
 );
 
 Store createStore() {

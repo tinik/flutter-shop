@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:shop/define.dart';
 import 'package:shop/screens/home/components/body.dart';
+import 'package:shop/screens/profile/screen.dart';
 import 'package:shop/screens/search/screen.dart';
 import 'package:shop/ui/cart.dart';
 
 class ScreenHome extends StatelessWidget {
+  AppBar _createBar(context) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      actions: <Widget>[
+        WidgetCart(),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context),
+      appBar: this._createBar(context),
       body: Body(),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: kPrimaryColor,
@@ -39,18 +50,18 @@ class ScreenHome extends StatelessWidget {
               ),
             );
           }
+
+          // Search index
+          if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ScreenProfile(),
+              ),
+            );
+          }
         },
       ),
-    );
-  }
-
-  buildAppBar(context) {
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      actions: <Widget>[
-        WidgetCart(),
-      ],
     );
   }
 }

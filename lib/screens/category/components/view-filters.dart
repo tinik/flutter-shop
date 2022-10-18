@@ -146,9 +146,7 @@ class _AggregationState extends State<Aggregations> {
             width: double.infinity,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                side: BorderSide(
-                  color: Colors.transparent,
-                ),
+                side: BorderSide.none,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),

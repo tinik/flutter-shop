@@ -31,9 +31,15 @@ class MyApp extends StatelessWidget {
       store: store as Store<AppState>,
       child: MaterialApp(
         theme: ThemeData(
-          textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
+          focusColor: kPrimaryColor,
+          primaryColor: kPrimaryColor,
+          textTheme: Theme.of(context).textTheme.apply(
+                bodyColor: kTextColor,
+              ),
           outlinedButtonTheme: OutlinedButtonThemeData(
-            style: OutlinedButton.styleFrom(primary: kTextColor),
+            style: OutlinedButton.styleFrom(
+              primary: kTextColor,
+            ),
           ),
         ),
         home: ScreenHome(),
